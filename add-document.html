@@ -30,11 +30,11 @@
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <img src="logo-uetto.png" class="logo" alt="Logo">
+                <img src="logo-uetto.png" class="logo" alt="Logo" onerror="this.src='https://placehold.co/50x50?text=UETTO'">
                 <div class="logo-text"><h1>UETTO</h1></div>
             </div>
             <nav>
-                <a href="index.html">Accueil</a>
+                <a href="index.html">🏠 Accueil</a>
                 <a href="add-document.html">➕ Ajouter</a>
                 <a href="my-archives.html">📁 Mes archives</a>
                 <button id="logoutBtn" class="logout-btn">🚪 Déconnexion</button>
@@ -67,7 +67,7 @@
                     <textarea id="description" rows="3" placeholder="Décrivez le contenu du document..."></textarea>
                 </div>
                 <div class="form-group">
-                    <label>Lien du document (Google Drive, Dropbox, ou upload)</label>
+                    <label>Lien du document (Google Drive, Dropbox, etc.)</label>
                     <input type="url" id="fileLink" placeholder="https://drive.google.com/...">
                 </div>
                 <button type="submit">📤 Publier le document</button>
@@ -77,11 +77,12 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, addDoc, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getDatabase, ref, push, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
             authDomain: "VOTRE_AUTH_DOMAIN",
+            databaseURL: "VOTRE_DATABASE_URL",
             projectId: "VOTRE_PROJECT_ID",
             storageBucket: "VOTRE_STORAGE_BUCKET",
             messagingSenderId: "VOTRE_MESSAGING_ID",
@@ -90,7 +91,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        const db = getDatabase(app);
 
         let currentUser = null;
 
@@ -115,7 +116,8 @@
             const messageDiv = document.getElementById('message');
 
             try {
-                const docRef = await addDoc(collection(db, "documents"), {
+                const newDocRef = push(ref(db, 'documents'));
+                await set(newDocRef, {
                     title: title,
                     type: type,
                     subject: subject,
@@ -125,11 +127,6 @@
                     userEmail: currentUser.email,
                     userName: currentUser.displayName,
                     createdAt: new Date().toISOString()
-                });
-
-                const userRef = doc(db, "users", currentUser.uid);
-                await updateDoc(userRef, {
-                    documents: arrayUnion(docRef.id)
                 });
 
                 messageDiv.innerHTML = '<div class="success">✅ Document ajouté avec succès !</div>';
