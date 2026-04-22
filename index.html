@@ -2,280 +2,53 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UETTO - Archives Étudiants Tchadiens à Tokat</title>
+    <title>UETTO - Accueil</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-        }
-
-        header {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(10px);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .header-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 1.5rem;
-        }
-
-        .logo {
-            width: 70px;
-            height: 70px;
-            object-fit: contain;
-            border-radius: 50%;
-            background: white;
-            padding: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: transform 0.3s;
-        }
-
-        .logo:hover {
-            transform: scale(1.05);
-        }
-
-        .logo-text h1 {
-            font-size: 1.8rem;
-            color: #1e3c72;
-            letter-spacing: 2px;
-        }
-
-        .logo-text p {
-            color: #666;
-            font-size: 0.9rem;
-        }
-
-        .subtitle {
-            font-size: 0.8rem;
-            color: #888;
-            font-style: italic;
-        }
-
-        nav {
-            background: #1e3c72;
-            padding: 0.8rem 2rem;
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-        }
-
-        nav a {
-            color: white;
-            text-decoration: none;
-            padding: 0.6rem 1.5rem;
-            border-radius: 30px;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        nav a:hover {
-            background: rgba(255,255,255,0.2);
-            transform: translateY(-2px);
-        }
-
-        main {
-            max-width: 1200px;
-            margin: 2rem auto;
-            padding: 0 2rem;
-        }
-
-        section {
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-
-        section:hover {
-            transform: translateY(-5px);
-        }
-
-        h2 {
-            color: #1e3c72;
-            margin-bottom: 1.5rem;
-            font-size: 1.8rem;
-            border-left: 5px solid #764ba2;
-            padding-left: 1rem;
-        }
-
-        .hero {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            text-align: center;
-        }
-
-        .hero h2 {
-            color: white;
-            border-left: none;
-            font-size: 2rem;
-        }
-
-        .hero p {
-            font-size: 1.2rem;
-            opacity: 0.95;
-        }
-
-        #document-list {
-            list-style: none;
-        }
-
-        #document-list li {
-            background: #f8f9fa;
-            padding: 1rem;
-            margin: 0.8rem 0;
-            border-radius: 12px;
-            border-left: 4px solid #764ba2;
-            transition: all 0.3s;
-        }
-
-        #document-list li:hover {
-            transform: translateX(8px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-
-        .download-link {
-            display: inline-block;
-            margin-top: 0.5rem;
-            color: #764ba2;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.5rem;
-            margin-top: 1rem;
-        }
-
-        .stat-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 1.8rem;
-            border-radius: 20px;
-            text-align: center;
-            transition: transform 0.3s;
-        }
-
-        .stat-card:hover {
-            transform: scale(1.05);
-        }
-
-        .stat-number {
-            font-size: 2.5rem;
-            font-weight: bold;
-            display: block;
-        }
-
-        .stat-label {
-            font-size: 1rem;
-            opacity: 0.9;
-        }
-
-        .links-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-        }
-
-        .link-card {
-            display: block;
-            padding: 1rem;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            text-decoration: none;
-            color: white;
-            text-align: center;
-            font-weight: 500;
-            transition: all 0.3s;
-        }
-
-        .link-card:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-
-        footer {
-            background: #1a1a2e;
-            color: white;
-            text-align: center;
-            padding: 2rem;
-            margin-top: 3rem;
-        }
-
-        @media (max-width: 768px) {
-            .logo-container {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            nav a {
-                padding: 0.4rem 1rem;
-                font-size: 0.9rem;
-            }
-            
-            main {
-                padding: 0 1rem;
-            }
-            
-            section {
-                padding: 1.2rem;
-            }
-            
-            h2 {
-                font-size: 1.4rem;
-            }
-            
-            .hero h2 {
-                font-size: 1.5rem;
-            }
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .header-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo-container { display: flex; align-items: center; gap: 1rem; }
+        .logo { width: 60px; height: 60px; border-radius: 50%; background: white; padding: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .logo-text h1 { font-size: 1.5rem; color: #1e3c72; }
+        .logo-text p { color: #666; font-size: 0.8rem; }
+        nav a { color: #1e3c72; text-decoration: none; margin: 0 0.5rem; padding: 0.5rem 1rem; border-radius: 20px; transition: 0.3s; }
+        nav a:hover { background: #667eea; color: white; }
+        .logout-btn { background: #f5576c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; }
+        main { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        section { background: white; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { color: #1e3c72; margin-bottom: 1.5rem; border-left: 5px solid #764ba2; padding-left: 1rem; }
+        .hero { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; }
+        .hero h2 { color: white; border-left: none; }
+        .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; }
+        .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 20px; text-align: center; }
+        .stat-number { font-size: 2rem; font-weight: bold; }
+        .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
+        .link-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; padding: 1rem; border-radius: 12px; text-align: center; }
+        .document-card { background: #f8f9fa; padding: 1rem; margin: 0.8rem 0; border-radius: 12px; border-left: 4px solid #764ba2; }
+        .download-link { color: #764ba2; text-decoration: none; font-weight: bold; }
+        footer { background: #1a1a2e; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
+        @media (max-width: 768px) { .header-container { flex-direction: column; text-align: center; } nav a { display: inline-block; margin: 0.2rem; } }
     </style>
 </head>
 <body>
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <img src="logo-uetto.png" alt="Logo UETTO" class="logo" onerror="this.src='https://placehold.co/80x80?text=UETTO'">
+                <img src="logo-uetto.png" class="logo" alt="Logo">
                 <div class="logo-text">
                     <h1>UETTO</h1>
                     <p>Union des Étudiants Tchadiens à Tokat</p>
-                    <p class="subtitle">Tokat'taki Çadlı Öğrenci Birliği</p>
                 </div>
             </div>
+            <nav>
+                <a href="index.html">🏠 Accueil</a>
+                <a href="add-document.html">➕ Ajouter</a>
+                <a href="my-archives.html">📁 Mes archives</a>
+                <button id="logoutBtn" class="logout-btn">🚪 Déconnexion</button>
+            </nav>
         </div>
-        <nav>
-            <a href="index.html">🏠 Accueil</a>
-            <a href="archives/cours.html">📚 Cours</a>
-            <a href="archives/annales.html">📝 Annales</a>
-            <a href="archives/admin.html">📋 Démarches</a>
-            <a href="archives/contribute.html">🤝 Contribuer</a>
-        </nav>
     </header>
-
     <main>
         <section class="hero">
             <h2>Bienvenue sur les archives UETTO</h2>
@@ -284,45 +57,96 @@
 
         <section>
             <h2>📖 Derniers documents ajoutés</h2>
-            <ul id="document-list">
-                <li>Cours de Mathématiques - Semestre 1 (PDF) - <a href="#">📥 Télécharger</a></li>
-                <li>Annales Examens 2025 - Droit (PDF) - <a href="#">📥 Télécharger</a></li>
-                <li>Procédure renouvellement titre de séjour (DOC) - <a href="#">📥 Télécharger</a></li>
-            </ul>
+            <div id="documentsList">Chargement...</div>
         </section>
 
         <section class="stats">
             <h2>📊 Notre communauté</h2>
             <div class="stats-grid">
-                <div class="stat-card">
-                    <span class="stat-number">120+</span>
-                    <span class="stat-label">Étudiants</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">45+</span>
-                    <span class="stat-label">Documents partagés</span>
-                </div>
-                <div class="stat-card">
-                    <span class="stat-number">8+</span>
-                    <span class="stat-label">Filières</span>
-                </div>
+                <div class="stat-card"><span class="stat-number" id="studentCount">0</span><br>Étudiants</div>
+                <div class="stat-card"><span class="stat-number" id="docCount">0</span><br>Documents partagés</div>
+                <div class="stat-card"><span class="stat-number" id="courseCount">0</span><br>Cours</div>
             </div>
         </section>
 
-        <section class="quick-links">
+        <section>
             <h2>🔗 Liens utiles</h2>
             <div class="links-grid">
-                <a href="archives/admin.html" class="link-card">📄 Renouvellement titre de séjour</a>
-                <a href="archives/admin.html" class="link-card">🏠 Logement KYK</a>
-                <a href="archives/admin.html" class="link-card">🎓 Inscription universitaire</a>
-                <a href="archives/contribute.html" class="link-card">💬 Nous contacter</a>
+                <a href="add-document.html" class="link-card">📤 Ajouter un document</a>
+                <a href="my-archives.html" class="link-card">📁 Mes archives</a>
+                <a href="#" class="link-card">🏠 Logement KYK</a>
+                <a href="#" class="link-card">📄 Renouvellement titre de séjour</a>
             </div>
         </section>
     </main>
-
     <footer>
-        <p>UETTO - Union des Étudiants Tchadiens à Tokat | Tokat'taki Çadlı Öğrenci Birliği</p>
+        <p>UETTO - Union des Étudiants Tchadiens à Tokat</p>
         <p>© 2026 - Tous droits réservés</p>
     </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, query, orderBy, limit, getDocs, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "VOTRE_API_KEY",
+            authDomain: "VOTRE_AUTH_DOMAIN",
+            projectId: "VOTRE_PROJECT_ID",
+            storageBucket: "VOTRE_STORAGE_BUCKET",
+            messagingSenderId: "VOTRE_MESSAGING_ID",
+            appId: "VOTRE_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        onAuthStateChanged(auth, async (user) => {
+            if (!user) { window.location.href = 'login.html'; return; }
+            
+            // Afficher le nom de l'utilisateur (optionnel)
+            document.querySelector('.logo-text p').innerHTML = `Bienvenue ${user.displayName || user.email} | Tokat'taki Çadlı Öğrenci Birliği`;
+            
+            // Charger les derniers documents
+            const q = query(collection(db, "documents"), orderBy("createdAt", "desc"), limit(10));
+            const querySnapshot = await getDocs(q);
+            const container = document.getElementById('documentsList');
+            
+            if (querySnapshot.empty) {
+                container.innerHTML = '<p>Aucun document pour le moment. Soyez le premier à <a href="add-document.html">ajouter un document</a> !</p>';
+            } else {
+                let html = '';
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    let typeEmoji = '📚';
+                    if (data.type === 'annales') typeEmoji = '📝';
+                    if (data.type === 'admin') typeEmoji = '📋';
+                    html += `
+                        <div class="document-card">
+                            <strong>${typeEmoji} ${data.title}</strong><br>
+                            <small>Ajouté par ${data.userName || data.userEmail} le ${new Date(data.createdAt).toLocaleDateString('fr-FR')}</small><br>
+                            ${data.fileLink ? `<a href="${data.fileLink}" target="_blank" class="download-link">📥 Télécharger</a>` : ''}
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
+            }
+            
+            // Compter les statistiques
+            const usersSnapshot = await getCountFromServer(collection(db, "users"));
+            const docsSnapshot = await getCountFromServer(collection(db, "documents"));
+            const coursSnapshot = await getCountFromServer(query(collection(db, "documents"), where("type", "==", "cours")));
+            
+            document.getElementById('studentCount').innerText = usersSnapshot.data().count;
+            document.getElementById('docCount').innerText = docsSnapshot.data().count;
+            document.getElementById('courseCount').innerText = coursSnapshot.data().count;
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'login.html';
+        });
+    </script>
 </body>
 </html>
