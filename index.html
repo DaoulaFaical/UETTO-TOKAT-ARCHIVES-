@@ -2,6 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UETTO - Accueil</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -24,7 +25,7 @@
         .stat-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 1.5rem; border-radius: 20px; text-align: center; }
         .stat-number { font-size: 2rem; font-weight: bold; }
         .links-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; }
-        .link-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; padding: 1rem; border-radius: 12px; text-align: center; }
+        .link-card { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-decoration: none; padding: 1rem; border-radius: 12px; text-align: center; display: block; }
         .document-card { background: #f8f9fa; padding: 1rem; margin: 0.8rem 0; border-radius: 12px; border-left: 4px solid #764ba2; }
         .download-link { color: #764ba2; text-decoration: none; font-weight: bold; }
         footer { background: #1a1a2e; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
@@ -35,7 +36,7 @@
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <img src="logo-uetto.png" class="logo" alt="Logo">
+                <img src="logo-uetto.png" class="logo" alt="Logo" onerror="this.src='https://placehold.co/60x60?text=UETTO'">
                 <div class="logo-text">
                     <h1>UETTO</h1>
                     <p>Union des Étudiants Tchadiens à Tokat</p>
@@ -54,28 +55,22 @@
             <h2>Bienvenue sur les archives UETTO</h2>
             <p>Plateforme de partage de ressources pour les étudiants tchadiens à Tokat, Turquie</p>
         </section>
-
         <section>
             <h2>📖 Derniers documents ajoutés</h2>
             <div id="documentsList">Chargement...</div>
         </section>
-
         <section class="stats">
             <h2>📊 Notre communauté</h2>
             <div class="stats-grid">
                 <div class="stat-card"><span class="stat-number" id="studentCount">0</span><br>Étudiants</div>
                 <div class="stat-card"><span class="stat-number" id="docCount">0</span><br>Documents partagés</div>
-                <div class="stat-card"><span class="stat-number" id="courseCount">0</span><br>Cours</div>
             </div>
         </section>
-
         <section>
             <h2>🔗 Liens utiles</h2>
             <div class="links-grid">
                 <a href="add-document.html" class="link-card">📤 Ajouter un document</a>
                 <a href="my-archives.html" class="link-card">📁 Mes archives</a>
-                <a href="#" class="link-card">🏠 Logement KYK</a>
-                <a href="#" class="link-card">📄 Renouvellement titre de séjour</a>
             </div>
         </section>
     </main>
@@ -87,11 +82,13 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, query, orderBy, limit, getDocs, getCountFromServer } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getDatabase, ref, onValue, get, child } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
+        // REMPLACEZ PAR VOS VRAIES CLÉS FIREBASE
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
             authDomain: "VOTRE_AUTH_DOMAIN",
+            databaseURL: "VOTRE_DATABASE_URL",
             projectId: "VOTRE_PROJECT_ID",
             storageBucket: "VOTRE_STORAGE_BUCKET",
             messagingSenderId: "VOTRE_MESSAGING_ID",
@@ -100,47 +97,41 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        const db = getDatabase(app);
 
         onAuthStateChanged(auth, async (user) => {
             if (!user) { window.location.href = 'login.html'; return; }
             
-            // Afficher le nom de l'utilisateur (optionnel)
-            document.querySelector('.logo-text p').innerHTML = `Bienvenue ${user.displayName || user.email} | Tokat'taki Çadlı Öğrenci Birliği`;
+            document.querySelector('.logo-text p').innerHTML = `Bienvenue ${user.displayName || user.email}`;
             
-            // Charger les derniers documents
-            const q = query(collection(db, "documents"), orderBy("createdAt", "desc"), limit(10));
-            const querySnapshot = await getDocs(q);
-            const container = document.getElementById('documentsList');
-            
-            if (querySnapshot.empty) {
-                container.innerHTML = '<p>Aucun document pour le moment. Soyez le premier à <a href="add-document.html">ajouter un document</a> !</p>';
-            } else {
+            // Charger les documents
+            const documentsRef = ref(db, 'documents');
+            onValue(documentsRef, (snapshot) => {
+                const docs = snapshot.val();
+                const container = document.getElementById('documentsList');
+                if (!docs) {
+                    container.innerHTML = '<p>Aucun document. <a href="add-document.html">Ajoutez le premier !</a></p>';
+                    return;
+                }
                 let html = '';
-                querySnapshot.forEach((doc) => {
-                    const data = doc.data();
-                    let typeEmoji = '📚';
-                    if (data.type === 'annales') typeEmoji = '📝';
-                    if (data.type === 'admin') typeEmoji = '📋';
-                    html += `
-                        <div class="document-card">
-                            <strong>${typeEmoji} ${data.title}</strong><br>
-                            <small>Ajouté par ${data.userName || data.userEmail} le ${new Date(data.createdAt).toLocaleDateString('fr-FR')}</small><br>
-                            ${data.fileLink ? `<a href="${data.fileLink}" target="_blank" class="download-link">📥 Télécharger</a>` : ''}
-                        </div>
-                    `;
+                Object.entries(docs).slice(-5).reverse().forEach(([id, data]) => {
+                    html += `<div class="document-card"><strong>📚 ${data.title}</strong><br><small>Ajouté par ${data.userName || data.userEmail}</small><br>${data.fileLink ? `<a href="${data.fileLink}" target="_blank" class="download-link">📥 Télécharger</a>` : ''}</div>`;
                 });
                 container.innerHTML = html;
-            }
+            });
             
-            // Compter les statistiques
-            const usersSnapshot = await getCountFromServer(collection(db, "users"));
-            const docsSnapshot = await getCountFromServer(collection(db, "documents"));
-            const coursSnapshot = await getCountFromServer(query(collection(db, "documents"), where("type", "==", "cours")));
+            // Compter les utilisateurs
+            const usersRef = ref(db, 'users');
+            onValue(usersRef, (snapshot) => {
+                const users = snapshot.val();
+                document.getElementById('studentCount').innerText = users ? Object.keys(users).length : 0;
+            });
             
-            document.getElementById('studentCount').innerText = usersSnapshot.data().count;
-            document.getElementById('docCount').innerText = docsSnapshot.data().count;
-            document.getElementById('courseCount').innerText = coursSnapshot.data().count;
+            // Compter les documents
+            onValue(documentsRef, (snapshot) => {
+                const docs = snapshot.val();
+                document.getElementById('docCount').innerText = docs ? Object.keys(docs).length : 0;
+            });
         });
 
         document.getElementById('logoutBtn').addEventListener('click', async () => {
