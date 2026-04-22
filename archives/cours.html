@@ -2,8 +2,29 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Cours - UETTO Archives</title>
-    <link rel="stylesheet" href="../assets/css/style.css">
+    <title>Cours - UETTO</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.1); position: sticky; top: 0; z-index: 100; }
+        .header-container { max-width: 1200px; margin: 0 auto; padding: 1rem 2rem; }
+        .logo-container { display: flex; align-items: center; gap: 1.5rem; }
+        .logo { width: 70px; height: 70px; object-fit: contain; border-radius: 50%; background: white; padding: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .logo-text h1 { font-size: 1.8rem; color: #1e3c72; }
+        .logo-text p { color: #666; font-size: 0.9rem; }
+        .subtitle { font-size: 0.8rem; color: #888; font-style: italic; }
+        nav { background: #1e3c72; padding: 0.8rem 2rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+        nav a { color: white; text-decoration: none; padding: 0.6rem 1.5rem; border-radius: 30px; font-weight: 500; transition: all 0.3s; }
+        nav a:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        main { max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        section { background: white; border-radius: 20px; padding: 2rem; margin-bottom: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { color: #1e3c72; margin-bottom: 1.5rem; font-size: 1.8rem; border-left: 5px solid #764ba2; padding-left: 1rem; }
+        .course-card { background: #f8f9fa; padding: 1.2rem; margin: 1rem 0; border-radius: 12px; border-left: 4px solid #764ba2; transition: all 0.3s; }
+        .course-card:hover { transform: translateX(5px); background: #e9ecef; }
+        .course-card a { display: inline-block; margin-top: 0.5rem; color: #764ba2; text-decoration: none; font-weight: bold; }
+        footer { background: #1a1a2e; color: white; text-align: center; padding: 2rem; margin-top: 3rem; }
+        @media (max-width: 768px) { .logo-container { flex-direction: column; text-align: center; } nav a { padding: 0.4rem 1rem; font-size: 0.9rem; } main { padding: 0 1rem; } section { padding: 1.2rem; } }
+    </style>
 </head>
 <body>
     <header>
@@ -21,21 +42,20 @@
             <a href="cours.html">📚 Cours</a>
             <a href="annales.html">📝 Annales</a>
             <a href="admin.html">📋 Démarches</a>
-            <a href="../pages/contribute.html">🤝 Contribuer</a>
+            <a href="contribute.html">🤝 Contribuer</a>
         </nav>
     </header>
-
     <main>
         <h2>📚 Cours par matière</h2>
         <div id="courses-list">
-            <p>Chargement des cours...</p>
+            <div class="course-card"><h3>Mathématiques</h3><p>Cours d'algèbre et analyse - Semestre 1</p><a href="#">📥 Télécharger le cours</a></div>
+            <div class="course-card"><h3>Informatique</h3><p>Programmation Java - Cours complet</p><a href="#">📥 Télécharger le cours</a></div>
+            <div class="course-card"><h3>Physique</h3><p>Mécanique et électricité - Semestre 2</p><a href="#">📥 Télécharger le cours</a></div>
+            <div class="course-card"><h3>Droit</h3><p>Droit constitutionnel turc - Introduction</p><a href="#">📥 Télécharger le cours</a></div>
         </div>
     </main>
-
     <footer>
         <p>UETTO - Union des Étudiants Tchadiens à Tokat</p>
     </footer>
-
-    <script src="../assets/js/main.js"></script>
 </body>
-</html>
+                                                </html>
