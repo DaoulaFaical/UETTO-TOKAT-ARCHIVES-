@@ -4,7 +4,256 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>UETTO - Archives Étudiants Tchadiens à Tokat</title>
-    <link rel="stylesheet" href="assets/css/style.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .logo {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            border-radius: 50%;
+            background: white;
+            padding: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .logo:hover {
+            transform: scale(1.05);
+        }
+
+        .logo-text h1 {
+            font-size: 1.8rem;
+            color: #1e3c72;
+            letter-spacing: 2px;
+        }
+
+        .logo-text p {
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .subtitle {
+            font-size: 0.8rem;
+            color: #888;
+            font-style: italic;
+        }
+
+        nav {
+            background: #1e3c72;
+            padding: 0.8rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        nav a:hover {
+            background: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+        }
+
+        section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+        }
+
+        section:hover {
+            transform: translateY(-5px);
+        }
+
+        h2 {
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+            border-left: 5px solid #764ba2;
+            padding-left: 1rem;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-align: center;
+        }
+
+        .hero h2 {
+            color: white;
+            border-left: none;
+            font-size: 2rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+        }
+
+        #document-list {
+            list-style: none;
+        }
+
+        #document-list li {
+            background: #f8f9fa;
+            padding: 1rem;
+            margin: 0.8rem 0;
+            border-radius: 12px;
+            border-left: 4px solid #764ba2;
+            transition: all 0.3s;
+        }
+
+        #document-list li:hover {
+            transform: translateX(8px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .download-link {
+            display: inline-block;
+            margin-top: 0.5rem;
+            color: #764ba2;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 1.8rem;
+            border-radius: 20px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: scale(1.05);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+        }
+
+        .link-card {
+            display: block;
+            padding: 1rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            text-decoration: none;
+            color: white;
+            text-align: center;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .link-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+
+        footer {
+            background: #1a1a2e;
+            color: white;
+            text-align: center;
+            padding: 2rem;
+            margin-top: 3rem;
+        }
+
+        @media (max-width: 768px) {
+            .logo-container {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav a {
+                padding: 0.4rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            main {
+                padding: 0 1rem;
+            }
+            
+            section {
+                padding: 1.2rem;
+            }
+            
+            h2 {
+                font-size: 1.4rem;
+            }
+            
+            .hero h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -23,7 +272,7 @@
             <a href="archives/cours.html">📚 Cours</a>
             <a href="archives/annales.html">📝 Annales</a>
             <a href="archives/admin.html">📋 Démarches</a>
-            <a href="pages/contribute.html">🤝 Contribuer</a>
+            <a href="archives/contribute.html">🤝 Contribuer</a>
         </nav>
     </header>
 
@@ -36,7 +285,9 @@
         <section>
             <h2>📖 Derniers documents ajoutés</h2>
             <ul id="document-list">
-                <li>Chargement des documents...</li>
+                <li>Cours de Mathématiques - Semestre 1 (PDF) - <a href="#">📥 Télécharger</a></li>
+                <li>Annales Examens 2025 - Droit (PDF) - <a href="#">📥 Télécharger</a></li>
+                <li>Procédure renouvellement titre de séjour (DOC) - <a href="#">📥 Télécharger</a></li>
             </ul>
         </section>
 
@@ -64,7 +315,7 @@
                 <a href="archives/admin.html" class="link-card">📄 Renouvellement titre de séjour</a>
                 <a href="archives/admin.html" class="link-card">🏠 Logement KYK</a>
                 <a href="archives/admin.html" class="link-card">🎓 Inscription universitaire</a>
-                <a href="pages/contribute.html" class="link-card">💬 Nous contacter</a>
+                <a href="archives/contribute.html" class="link-card">💬 Nous contacter</a>
             </div>
         </section>
     </main>
@@ -73,7 +324,5 @@
         <p>UETTO - Union des Étudiants Tchadiens à Tokat | Tokat'taki Çadlı Öğrenci Birliği</p>
         <p>© 2026 - Tous droits réservés</p>
     </footer>
-
-    <script src="assets/js/main.js"></script>
 </body>
 </html>
