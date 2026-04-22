@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Contribuer - UETTO Archives</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="../logo-uetto.png" alt="Logo UETTO" class="logo" onerror="this.src='https://placehold.co/80x80?text=UETTO'">
+                <div class="logo-text">
+                    <h1>UETTO</h1>
+                    <p>Contribuez à la communauté</p>
+                </div>
+            </div>
+        </div>
+        <nav>
+            <a href="../index.html">🏠 Accueil</a>
+            <a href="../archives/cours.html">📚 Cours</a>
+            <a href="../archives/annales.html">📝 Annales</a>
+            <a href="../archives/admin.html">📋 Démarches</a>
+            <a href="contribute.html">🤝 Contribuer</a>
+        </nav>
+    </header>
+
+    <main>
+        <section>
+            <h2>🤝 Partager un document</h2>
+            <p>Vous pouvez envoyer vos documents par email ou via le formulaire ci-dessous.</p>
+            
+            <form action="#" method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <label>Votre nom *</label>
+                    <input type="text" name="nom" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" name="email" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Type de document *</label>
+                    <select name="type" required>
+                        <option value="">Sélectionnez</option>
+                        <option value="cours">Cours</option>
+                        <option value="annales">Annales / Examen</option>
+                        <option value="admin">Démarche administrative</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label>Titre du document *</label>
+                    <input type="text" name="titre" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea name="description" rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label>Fichier (PDF, DOC, ZIP)</label>
+                    <input type="file" name="fichier" accept=".pdf,.doc,.docx,.zip">
+                </div>
+                
+                <div class="alert">
+                    📧 Alternative : Envoyez vos documents par email à : <strong>uetto.tokat@gmail.com</strong>
+                </div>
+                
+                <button type="submit" class="btn-submit">📤 Envoyer ma contribution</button>
+            </form>
+        </section>
+
+        <section>
+            <h2>📞 Contacts UETTO</h2>
+            <ul>
+                <li>Email : uetto.tokat@gmail.com</li>
+                <li>WhatsApp : Groupe des étudiants tchadiens de Tokat</li>
+                <li>Instagram : @uetto_tokat (à créer)</li>
+            </ul>
+        </section>
+    </main>
+
+    <footer>
+        <p>UETTO - Union des Étudiants Tchadiens à Tokat</p>
+    </footer>
+</body>
+</html>
