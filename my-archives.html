@@ -56,15 +56,15 @@
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
         import { getDatabase, ref, onValue, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        const firebaseConfig = {
-            apiKey: "VOTRE_API_KEY",
-            authDomain: "VOTRE_AUTH_DOMAIN",
-            databaseURL: "VOTRE_DATABASE_URL",
-            projectId: "VOTRE_PROJECT_ID",
-            storageBucket: "VOTRE_STORAGE_BUCKET",
-            messagingSenderId: "VOTRE_MESSAGING_ID",
-            appId: "VOTRE_APP_ID"
-        };
+       const firebaseConfig = {
+    apiKey: "AIzaSyBJvIKoK8ffLsOroCDM_jtW0nzB9CNnQmQ",
+    authDomain: "uetto-tokat.firebaseapp.com",
+    databaseURL: "https://uetto-tokat-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "uetto-tokat",
+    storageBucket: "uetto-tokat.firebasestorage.app",
+    messagingSenderId: "123574749707",
+    appId: "1:123574749707:web:e50ddcaab587c4d8a0950e"
+  };
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
