@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajouter un document - UETTO</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); min-height: 100vh; }
+        header { background: rgba(255,255,255,0.95); backdrop-filter: blur(10px); box-shadow: 0 4px 20px rgba(0,0,0,0.1); padding: 1rem 2rem; }
+        .header-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+        .logo-container { display: flex; align-items: center; gap: 1rem; }
+        .logo { width: 50px; height: 50px; border-radius: 50%; background: white; padding: 5px; }
+        .logo-text h1 { font-size: 1.5rem; color: #1e3c72; }
+        nav a { color: #1e3c72; text-decoration: none; margin: 0 0.5rem; padding: 0.5rem 1rem; border-radius: 20px; transition: 0.3s; }
+        nav a:hover { background: #667eea; color: white; }
+        .logout-btn { background: #f5576c; color: white; border: none; padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer; }
+        main { max-width: 800px; margin: 2rem auto; padding: 0 2rem; }
+        .card { background: white; border-radius: 20px; padding: 2rem; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        h2 { color: #1e3c72; margin-bottom: 1.5rem; border-left: 5px solid #764ba2; padding-left: 1rem; }
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; margin-bottom: 0.5rem; font-weight: bold; color: #333; }
+        input, select, textarea { width: 100%; padding: 0.8rem; border: 2px solid #e0e0e0; border-radius: 10px; font-size: 1rem; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #764ba2; }
+        button { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 0.8rem 2rem; border: none; border-radius: 10px; font-size: 1rem; font-weight: bold; cursor: pointer; width: 100%; }
+        .success { background: #d4edda; color: #155724; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; }
+        .error { background: #f8d7da; color: #721c24; padding: 1rem; border-radius: 10px; margin-bottom: 1rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="logo-uetto.png" class="logo" alt="Logo">
+                <div class="logo-text"><h1>UETTO</h1></div>
+            </div>
+            <nav>
+                <a href="index.html">Accueil</a>
+                <a href="add-document.html">➕ Ajouter</a>
+                <a href="my-archives.html">📁 Mes archives</a>
+                <button id="logoutBtn" class="logout-btn">🚪 Déconnexion</button>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <div class="card">
+            <h2>📤 Ajouter un document</h2>
+            <div id="message"></div>
+            <form id="documentForm">
+                <div class="form-group">
+                    <label>Titre du document *</label>
+                    <input type="text" id="title" required placeholder="Ex: Cours de Mathématiques Semestre 1">
+                </div>
+                <div class="form-group">
+                    <label>Type de document *</label>
+                    <select id="type" required>
+                        <option value="cours">📚 Cours</option>
+                        <option value="annales">📝 Annales / Examen</option>
+                        <option value="admin">📋 Démarche administrative</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Matière / Filière</label>
+                    <input type="text" id="subject" placeholder="Ex: Mathématiques, Droit, Informatique...">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="description" rows="3" placeholder="Décrivez le contenu du document..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Lien du document (Google Drive, Dropbox, ou upload)</label>
+                    <input type="url" id="fileLink" placeholder="https://drive.google.com/...">
+                </div>
+                <button type="submit">📤 Publier le document</button>
+            </form>
+        </div>
+    </main>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+        import { getFirestore, collection, addDoc, doc, updateDoc, arrayUnion } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "VOTRE_API_KEY",
+            authDomain: "VOTRE_AUTH_DOMAIN",
+            projectId: "VOTRE_PROJECT_ID",
+            storageBucket: "VOTRE_STORAGE_BUCKET",
+            messagingSenderId: "VOTRE_MESSAGING_ID",
+            appId: "VOTRE_APP_ID"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+
+        let currentUser = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (!user) { window.location.href = 'login.html'; }
+            else { currentUser = user; }
+        });
+
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            await signOut(auth);
+            window.location.href = 'login.html';
+        });
+
+        document.getElementById('documentForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const title = document.getElementById('title').value;
+            const type = document.getElementById('type').value;
+            const subject = document.getElementById('subject').value;
+            const description = document.getElementById('description').value;
+            const fileLink = document.getElementById('fileLink').value;
+
+            const messageDiv = document.getElementById('message');
+
+            try {
+                const docRef = await addDoc(collection(db, "documents"), {
+                    title: title,
+                    type: type,
+                    subject: subject,
+                    description: description,
+                    fileLink: fileLink,
+                    userId: currentUser.uid,
+                    userEmail: currentUser.email,
+                    userName: currentUser.displayName,
+                    createdAt: new Date().toISOString()
+                });
+
+                const userRef = doc(db, "users", currentUser.uid);
+                await updateDoc(userRef, {
+                    documents: arrayUnion(docRef.id)
+                });
+
+                messageDiv.innerHTML = '<div class="success">✅ Document ajouté avec succès !</div>';
+                document.getElementById('documentForm').reset();
+                setTimeout(() => { messageDiv.innerHTML = ''; }, 3000);
+            } catch (error) {
+                messageDiv.innerHTML = '<div class="error">❌ Erreur : ' + error.message + '</div>';
+            }
+        });
+    </script>
+</body>
+</html>
