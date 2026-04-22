@@ -50,10 +50,10 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // REMPLACEZ PAR VOTRE CONFIGURATION FIREBASE
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
             authDomain: "VOTRE_AUTH_DOMAIN",
+            databaseURL: "VOTRE_DATABASE_URL",
             projectId: "VOTRE_PROJECT_ID",
             storageBucket: "VOTRE_STORAGE_BUCKET",
             messagingSenderId: "VOTRE_MESSAGING_ID",
@@ -67,9 +67,7 @@
             e.preventDefault();
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-            
             document.getElementById('error').innerHTML = '';
-
             try {
                 await signInWithEmailAndPassword(auth, email, password);
                 window.location.href = 'index.html';
@@ -79,4 +77,4 @@
         });
     </script>
 </body>
-  </html>
+</html>
