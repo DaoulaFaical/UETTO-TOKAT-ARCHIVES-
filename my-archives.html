@@ -25,17 +25,18 @@
         .badge-admin { background: #f5576c; color: white; }
         .download-link { color: #764ba2; text-decoration: none; font-weight: bold; }
         .empty { text-align: center; padding: 3rem; background: white; border-radius: 20px; color: #666; }
+        footer { background: #1a1a2e; color: white; text-align: center; padding: 2rem; margin-top: 2rem; }
     </style>
 </head>
 <body>
     <header>
         <div class="header-container">
             <div class="logo-container">
-                <img src="logo-uetto.png" class="logo" alt="Logo">
+                <img src="logo-uetto.png" class="logo" alt="Logo" onerror="this.src='https://placehold.co/50x50?text=UETTO'">
                 <div class="logo-text"><h1>UETTO</h1></div>
             </div>
             <nav>
-                <a href="index.html">Accueil</a>
+                <a href="index.html">🏠 Accueil</a>
                 <a href="add-document.html">➕ Ajouter</a>
                 <a href="my-archives.html">📁 Mes archives</a>
                 <button id="logoutBtn" class="logout-btn">🚪 Déconnexion</button>
@@ -46,14 +47,19 @@
         <h2>📁 Mes archives personnelles</h2>
         <div id="documentsList">Chargement...</div>
     </main>
+    <footer>
+        <p>UETTO - Union des Étudiants Tchadiens à Tokat</p>
+        <p>© 2026 - Tous droits réservés</p>
+    </footer>
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, collection, query, where, getDocs } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getDatabase, ref, onValue, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
             authDomain: "VOTRE_AUTH_DOMAIN",
+            databaseURL: "VOTRE_DATABASE_URL",
             projectId: "VOTRE_PROJECT_ID",
             storageBucket: "VOTRE_STORAGE_BUCKET",
             messagingSenderId: "VOTRE_MESSAGING_ID",
@@ -62,40 +68,48 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        const db = getDatabase(app);
 
-        onAuthStateChanged(auth, async (user) => {
+        onAuthStateChanged(auth, (user) => {
             if (!user) { window.location.href = 'login.html'; return; }
             
-            const q = query(collection(db, "documents"), where("userId", "==", user.uid));
-            const querySnapshot = await getDocs(q);
-            const container = document.getElementById('documentsList');
-            
-            if (querySnapshot.empty) {
-                container.innerHTML = '<div class="empty">📭 Vous n\'avez pas encore ajouté de documents. <a href="add-document.html">Ajoutez votre premier document →</a></div>';
-                return;
-            }
-            
-            let html = '';
-            querySnapshot.forEach((doc) => {
-                const data = doc.data();
-                let badgeClass = 'badge-cours';
-                let typeLabel = '📚 Cours';
-                if (data.type === 'annales') { badgeClass = 'badge-annales'; typeLabel = '📝 Annales'; }
-                if (data.type === 'admin') { badgeClass = 'badge-admin'; typeLabel = '📋 Administratif'; }
+            const documentsRef = ref(db, 'documents');
+            onValue(documentsRef, (snapshot) => {
+                const docs = snapshot.val();
+                const container = document.getElementById('documentsList');
                 
-                html += `
-                    <div class="document-card">
-                        <span class="badge ${badgeClass}">${typeLabel}</span>
-                        <h3>${data.title}</h3>
-                        ${data.subject ? `<p>📖 ${data.subject}</p>` : ''}
-                        ${data.description ? `<p>${data.description}</p>` : ''}
-                        <p><small>📅 Ajouté le ${new Date(data.createdAt).toLocaleDateString('fr-FR')}</small></p>
-                        ${data.fileLink ? `<a href="${data.fileLink}" target="_blank" class="download-link">📥 Télécharger le document</a>` : '<p class="download-link">⚠️ Lien non disponible</p>'}
-                    </div>
-                `;
+                if (!docs) {
+                    container.innerHTML = '<div class="empty">📭 Vous n\'avez pas encore ajouté de documents. <a href="add-document.html">Ajoutez votre premier document →</a></div>';
+                    return;
+                }
+                
+                const userDocs = Object.entries(docs).filter(([id, data]) => data.userId === user.uid);
+                
+                if (userDocs.length === 0) {
+                    container.innerHTML = '<div class="empty">📭 Vous n\'avez pas encore ajouté de documents. <a href="add-document.html">Ajoutez votre premier document →</a></div>';
+                    return;
+                }
+                
+                let html = '';
+                userDocs.forEach(([id, data]) => {
+                    let badgeClass = 'badge-cours';
+                    let typeLabel = '📚 Cours';
+                    if (data.type === 'annales') { badgeClass = 'badge-annales'; typeLabel = '📝 Annales'; }
+                    if (data.type === 'admin') { badgeClass = 'badge-admin'; typeLabel = '📋 Administratif'; }
+                    
+                    html += `
+                        <div class="document-card">
+                            <span class="badge ${badgeClass}">${typeLabel}</span>
+                            <h3>${data.title}</h3>
+                            ${data.subject ? `<p>📖 ${data.subject}</p>` : ''}
+                            ${data.description ? `<p>${data.description}</p>` : ''}
+                            <p><small>📅 Ajouté le ${new Date(data.createdAt).toLocaleDateString('fr-FR')}</small></p>
+                            ${data.fileLink ? `<a href="${data.fileLink}" target="_blank" class="download-link">📥 Télécharger le document</a>` : '<p class="download-link">⚠️ Lien non disponible</p>'}
+                        </div>
+                    `;
+                });
+                container.innerHTML = html;
             });
-            container.innerHTML = html;
         });
 
         document.getElementById('logoutBtn').addEventListener('click', async () => {
