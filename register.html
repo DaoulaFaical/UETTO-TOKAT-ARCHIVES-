@@ -59,12 +59,12 @@
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getAuth, createUserWithEmailAndPassword, updateProfile } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
-        import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
-        // REMPLACEZ PAR VOTRE CONFIGURATION FIREBASE
         const firebaseConfig = {
             apiKey: "VOTRE_API_KEY",
             authDomain: "VOTRE_AUTH_DOMAIN",
+            databaseURL: "VOTRE_DATABASE_URL",
             projectId: "VOTRE_PROJECT_ID",
             storageBucket: "VOTRE_STORAGE_BUCKET",
             messagingSenderId: "VOTRE_MESSAGING_ID",
@@ -73,7 +73,7 @@
 
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
-        const db = getFirestore(app);
+        const db = getDatabase(app);
 
         document.getElementById('registerForm').addEventListener('submit', async (e) => {
             e.preventDefault();
@@ -93,11 +93,10 @@
             try {
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 await updateProfile(userCredential.user, { displayName: fullname });
-                await setDoc(doc(db, "users", userCredential.user.uid), {
+                await set(ref(db, 'users/' + userCredential.user.uid), {
                     fullname: fullname,
                     email: email,
-                    createdAt: new Date().toISOString(),
-                    documents: []
+                    createdAt: new Date().toISOString()
                 });
                 document.getElementById('success').innerHTML = '✅ Compte créé ! Redirection...';
                 setTimeout(() => { window.location.href = 'index.html'; }, 2000);
